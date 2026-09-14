@@ -1,0 +1,2922 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elira & Jon — 20.07.2027</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Italianno&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ivory:#f8f4ec;
+  --cream:#f1e9dc;
+  --paper:#fffdf8;
+  --sage-light:#aeb7a1;
+  --sage:#78836c;
+  --sage-dark:#4d5949;
+  --olive:#626b55;
+  --gold:#b49a6a;
+  --gold-light:#d6c49e;
+  --brown:#756657;
+  --ink:#39372f;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box
+}
+
+html{
+  scroll-behavior:smooth
+}
+
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:"Cormorant Garamond",serif;
+  overflow:hidden;
+}
+
+button,a{
+  font-family:inherit
+}
+
+img{
+  max-width:100%;
+  display:block
+}
+
+/* =========================
+   ENVELOPE
+========================= */
+
+.envelope-screen{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  min-height:650px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:radial-gradient(
+    ellipse at center 45%,
+    #fcfaf5 0%,
+    #f5f0e7 42%,
+    #e8dfd2 100%
+  );
+  transition:opacity 1.8s ease;
+}
+
+.envelope-screen::before{
+  content:"";
+  position:absolute;
+  width:760px;
+  height:760px;
+  left:50%;
+  top:48%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(255,255,255,.96) 0%,
+    rgba(255,255,255,.63) 35%,
+    transparent 72%
+  );
+}
+
+.envelope-screen::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.2;
+  pointer-events:none;
+  background-image:radial-gradient(
+    rgba(92,78,59,.1) .55px,
+    transparent .7px
+  );
+  background-size:7px 7px;
+  mix-blend-mode:multiply;
+}
+
+.envelope-screen.opened{
+  opacity:0;
+  pointer-events:none;
+}
+
+.top-label,
+.open-label{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:30;
+  color:#756a5d;
+  white-space:nowrap;
+}
+
+.top-label{
+  top:8%;
+  font-size:10px;
+  letter-spacing:5px;
+}
+
+.open-label{
+  top:76%;
+  font-size:9px;
+  letter-spacing:4px;
+}
+
+/* Envelope decoration */
+
+.envelope-background{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:760px;
+  height:500px;
+  transform:translate(-50%,-50%);
+  z-index:3;
+  opacity:.75;
+  pointer-events:none;
+}
+
+.envelope-background::before,
+.envelope-background::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+}
+
+.envelope-background::before{
+  width:650px;
+  height:405px;
+  border:1px solid rgba(180,154,106,.23);
+  box-shadow:
+    0 0 0 18px rgba(180,154,106,.035),
+    0 0 0 34px rgba(120,131,108,.025);
+}
+
+.envelope-background::after{
+  width:490px;
+  height:300px;
+  border:1px solid rgba(120,131,108,.13);
+}
+
+.bg-dot{
+  position:absolute;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 0 3px rgba(180,154,106,.07);
+  opacity:.62;
+}
+
+.bg-dot.sage{
+  background:var(--sage);
+  box-shadow:0 0 0 3px rgba(120,131,108,.06);
+}
+
+.dot-1{left:13%;top:30%}
+.dot-2{left:20%;top:67%}
+.dot-3{left:29%;top:19%}
+.dot-4{left:76%;top:25%}
+.dot-5{right:14%;top:63%}
+.dot-6{right:24%;top:78%}
+.dot-7{right:31%;top:17%}
+.dot-8{left:9%;top:49%}
+.dot-9{right:9%;top:47%}
+
+.bg-diamond{
+  position:absolute;
+  width:7px;
+  height:7px;
+  border:1px solid rgba(180,154,106,.45);
+  transform:rotate(45deg);
+  opacity:.6;
+}
+
+.diamond-1{left:17%;top:43%}
+.diamond-2{right:17%;top:43%}
+.diamond-3{left:28%;bottom:16%}
+.diamond-4{right:28%;bottom:16%}
+
+.bg-ring{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border:1px solid rgba(180,154,106,.28);
+  border-radius:50%;
+  opacity:.65;
+}
+
+.ring-left{left:18%;top:57%}
+.ring-right{right:18%;top:57%}
+
+.ring-top{
+  left:50%;
+  top:4%;
+  transform:translateX(-50%);
+  width:13px;
+  height:13px;
+  border-color:rgba(120,131,108,.25);
+}
+
+/* Envelope itself */
+
+.envelope-wrapper{
+  position:relative;
+  width:520px;
+  height:335px;
+  perspective:1400px;
+  z-index:10;
+}
+
+.envelope{
+  position:absolute;
+  inset:0;
+  filter:drop-shadow(0 35px 40px rgba(60,45,30,.18));
+}
+
+.envelope-back{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  border-radius:3px;
+  background:linear-gradient(
+    145deg,
+    #eee5d8,
+    #e4d9c9 45%,
+    #d8cbbb
+  );
+}
+
+.envelope-back::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.3;
+  background-image:radial-gradient(
+    rgba(102,85,62,.13) .5px,
+    transparent .6px
+  );
+  background-size:6px 6px;
+}
+
+.envelope-back::after{
+  content:"";
+  position:absolute;
+  inset:13px;
+  border:1px solid rgba(180,154,106,.27);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.13);
+}
+
+.letter{
+  position:absolute;
+  left:7%;
+  bottom:4%;
+  width:86%;
+  height:92%;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:linear-gradient(135deg,#fffdf8,#f9f5ed);
+  box-shadow:0 8px 20px rgba(60,45,30,.08);
+  transition:transform 1.3s cubic-bezier(.77,0,.18,1);
+}
+
+.letter-content{
+  width:80%;
+  padding:25px;
+  border:1px solid rgba(169,141,98,.35);
+}
+
+.letter-small{
+  margin-bottom:14px;
+  color:#827668;
+  font-size:10px;
+  letter-spacing:3px;
+}
+
+.letter-name{
+  font-size:58px;
+  font-weight:300;
+  line-height:.75;
+}
+
+.letter-amp{
+  margin:7px 0;
+  color:#a98d62;
+  font-family:Italianno,cursive;
+  font-size:38px;
+}
+
+.letter-message{
+  margin-top:22px;
+  color:#756a5d;
+  font-size:15px;
+  line-height:1.35;
+}
+
+.letter-date{
+  margin-top:18px;
+  color:#827668;
+  font-size:9px;
+  letter-spacing:4px;
+}
+
+.envelope-bottom,
+.envelope-left,
+.envelope-right,
+.envelope-flap{
+  position:absolute;
+  background:linear-gradient(135deg,#e7dccb,#d7c9b6);
+}
+
+.envelope-bottom{
+  left:0;
+  bottom:0;
+  width:100%;
+  height:72%;
+  z-index:5;
+  clip-path:polygon(
+    0 0,
+    50% 57%,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+.envelope-left{
+  left:0;
+  bottom:0;
+  width:51%;
+  height:100%;
+  z-index:6;
+  background:linear-gradient(135deg,#e9dfd1,#d9cdbb);
+  clip-path:polygon(0 0,100% 50%,0 100%);
+}
+
+.envelope-right{
+  right:0;
+  bottom:0;
+  width:51%;
+  height:100%;
+  z-index:6;
+  background:linear-gradient(225deg,#e9dfd1,#d9cdbb);
+  clip-path:polygon(100% 0,0 50%,100% 100%);
+}
+
+.envelope-flap{
+  left:0;
+  top:0;
+  width:100%;
+  height:67%;
+  z-index:8;
+  background:linear-gradient(180deg,#e6dccd,#d7c9b7);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top center;
+  transition:transform 1.25s cubic-bezier(.77,0,.18,1);
+  backface-visibility:hidden;
+}
+
+/* Wax seal */
+
+.wax-seal{
+  position:absolute;
+  left:50%;
+  top:58%;
+  transform:translate(-50%,-50%);
+  width:84px;
+  height:84px;
+  z-index:20;
+  border:0;
+  border-radius:49% 51% 48% 52% / 52% 47% 53% 48%;
+  cursor:pointer;
+  background:radial-gradient(
+    circle at 34% 24%,
+    #b1bda2,
+    #96a588 24%,
+    #78886c 53%,
+    #596a51 78%,
+    #4d5d47
+  );
+  box-shadow:
+    0 9px 22px rgba(49,60,44,.3),
+    inset 0 0 0 2px rgba(239,241,226,.34),
+    inset 0 0 0 5px rgba(52,67,47,.24),
+    inset 0 -7px 10px rgba(45,56,40,.2),
+    inset 3px 3px 8px rgba(255,255,255,.12);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+
+.wax-seal::before,
+.wax-seal::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+}
+
+.wax-seal::before{
+  inset:7px;
+  border:1px solid rgba(235,240,224,.38);
+  box-shadow:inset 0 0 0 1px rgba(48,63,44,.18);
+}
+
+.wax-seal::after{
+  inset:14px;
+  border:1px solid rgba(230,237,218,.3);
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.15),
+    0 1px 2px rgba(42,54,38,.18);
+}
+
+.wax-seal:hover{
+  transform:translate(-50%,-50%) scale(1.07);
+}
+
+.wax-monogram{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-53%);
+  width:52px;
+  height:39px;
+  z-index:10;
+  color:#f6f5e9;
+  text-shadow:1px 1px 1px rgba(42,55,38,.27);
+  filter:drop-shadow(0 1px 1px rgba(40,51,35,.22));
+}
+
+.wax-letter{
+  position:absolute;
+  top:50%;
+  color:#f5f5e9;
+  font-family:"Libre Baskerville","Cormorant Garamond",serif;
+  font-size:27px;
+}
+
+.wax-letter-e{
+  left:5px;
+  transform:translateY(-55%) scaleX(.88);
+}
+
+.wax-letter-j{
+  right:5px;
+  transform:translateY(-55%) scaleX(.88);
+}
+
+.wax-heart{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-52%);
+  color:#f7f5e9;
+  font-family:"Cormorant Garamond",serif;
+  font-size:13px;
+}
+
+.wax-seal-detail{
+  position:absolute;
+  left:50%;
+  bottom:9px;
+  transform:translateX(-50%);
+  color:rgba(240,242,225,.48);
+  font-size:6px;
+  letter-spacing:2px;
+}
+
+.envelope.open .envelope-flap{
+  transform:rotateX(180deg)
+}
+
+.envelope.open .letter{
+  transform:translateY(-190px)
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:90px 25px 80px;
+  overflow:hidden;
+  text-align:center;
+  background:#eee6d9;
+}
+
+.hero-photo{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+
+.hero-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 43%;
+  opacity:.34;
+  filter:saturate(.62) contrast(.94) brightness(1.06) sepia(.08);
+  transform:scale(1.035);
+  animation:heroPhotoBreath 18s ease-in-out infinite alternate;
+}
+
+@keyframes heroPhotoBreath{
+  from{
+    transform:scale(1.035)
+  }
+
+  to{
+    transform:scale(1.065)
+  }
+}
+
+.hero-photo::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  background:linear-gradient(
+    180deg,
+    rgba(248,244,236,.48),
+    rgba(248,244,236,.2) 25%,
+    rgba(248,244,236,.13) 48%,
+    rgba(248,244,236,.32) 74%,
+    rgba(248,244,236,.64)
+  );
+}
+
+.hero-photo::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:3;
+  background:radial-gradient(
+    ellipse at center,
+    rgba(255,253,248,.05),
+    rgba(255,253,248,.1) 38%,
+    rgba(238,230,217,.42)
+  );
+}
+
+.hero-grain{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  opacity:.14;
+  pointer-events:none;
+  background-image:radial-gradient(
+    rgba(86,72,53,.12) .45px,
+    transparent .6px
+  );
+  background-size:8px 8px;
+  mix-blend-mode:multiply;
+}
+
+/* =========================
+   SPARKLES
+========================= */
+
+.hero-sparkles{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.sparkle{
+  position:absolute;
+
+  /* vetëm pak më të mëdha */
+  width:5.5px;
+  height:5.5px;
+
+  opacity:0;
+  transform:scale(.15) rotate(45deg);
+  animation:sparkleShine var(--duration) ease-in-out var(--delay) infinite;
+  filter:blur(.15px);
+}
+
+.sparkle::before,
+.sparkle::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  border-radius:999px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,249,225,.98),
+    transparent
+  );
+  box-shadow:
+    0 0 4px rgba(245,220,170,.98),
+    0 0 10px rgba(220,190,130,.78),
+    0 0 18px rgba(220,190,130,.38);
+}
+
+.sparkle::before{
+  width:1px;
+  height:21px;
+
+  background:linear-gradient(
+    180deg,
+    transparent,
+    rgba(255,249,225,.98),
+    transparent
+  );
+}
+
+.sparkle::after{
+  width:21px;
+  height:1px;
+}
+
+.sparkle.large{
+  width:8.5px;
+  height:8.5px;
+}
+
+.sparkle.large::before{
+  height:33px;
+}
+
+.sparkle.large::after{
+  width:33px;
+}
+
+.sparkle.tiny{
+  width:3.2px;
+  height:3.2px;
+}
+
+.sparkle.tiny::before{
+  height:13px;
+}
+
+.sparkle.tiny::after{
+  width:13px;
+}
+
+@keyframes sparkleShine{
+  0%,100%{
+    opacity:0;
+    transform:scale(.1) rotate(45deg);
+    filter:blur(1.2px);
+  }
+
+  20%{
+    opacity:.18;
+    transform:scale(.42) rotate(45deg);
+    filter:blur(.65px);
+  }
+
+  38%{
+    opacity:1;
+    transform:scale(1) rotate(45deg);
+    filter:blur(0);
+  }
+
+  55%{
+    opacity:.62;
+    transform:scale(.72) rotate(45deg);
+    filter:blur(.2px);
+  }
+
+  75%{
+    opacity:.1;
+    transform:scale(.22) rotate(45deg);
+    filter:blur(.8px);
+  }
+}
+
+.hero-light{
+  position:absolute;
+  width:360px;
+  height:360px;
+  left:50%;
+  top:44%;
+  transform:translate(-50%,-50%);
+  z-index:5;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(255,250,232,.17),
+    rgba(255,247,225,.07) 34%,
+    transparent 72%
+  );
+  animation:heroLightPulse 7s ease-in-out infinite;
+  pointer-events:none;
+}
+
+@keyframes heroLightPulse{
+  0%,100%{
+    opacity:.45;
+    transform:translate(-50%,-50%) scale(.92)
+  }
+
+  50%{
+    opacity:.9;
+    transform:translate(-50%,-50%) scale(1.08)
+  }
+}
+
+.hero-border{
+  position:absolute;
+  inset:26px;
+  z-index:18;
+  border:1px solid rgba(180,154,106,.3);
+  pointer-events:none;
+}
+
+.hero-border::before{
+  content:"";
+  position:absolute;
+  inset:7px;
+  border:1px solid rgba(120,131,108,.1);
+}
+
+.hero-inner{
+  position:relative;
+  z-index:20;
+  width:min(900px,90vw);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.hero-eyebrow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  margin-bottom:42px;
+  color:#625b52;
+  font-size:9px;
+  letter-spacing:5px;
+  text-shadow:0 1px 8px rgba(255,255,255,.55);
+}
+
+.hero-eyebrow::before,
+.hero-eyebrow::after{
+  content:"";
+  width:45px;
+  height:1px;
+  background:#a98d62;
+  opacity:.72;
+}
+
+/* E J mbi emrat është hequr */
+
+.hero-names{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  color:#35342f;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.75),
+    0 5px 18px rgba(70,58,44,.1);
+}
+
+.hero-name-first,
+.hero-name-last{
+  font-size:clamp(78px,13vw,148px);
+  font-weight:300;
+  line-height:.72;
+  letter-spacing:-4px;
+}
+
+.hero-amp{
+  margin:20px 0 16px;
+  color:#a98d62;
+  font-family:Italianno,cursive;
+  font-size:clamp(45px,6vw,72px);
+  line-height:.7;
+  transform:translateX(4px);
+}
+
+.hero-divider{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:13px;
+  width:220px;
+  margin-top:52px;
+}
+
+.hero-divider-line{
+  width:75px;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(180,154,106,.7)
+  );
+}
+
+.hero-divider-line:last-child{
+  background:linear-gradient(
+    90deg,
+    rgba(180,154,106,.7),
+    transparent
+  );
+}
+
+.hero-divider-symbol{
+  color:var(--gold);
+  font-size:10px;
+}
+
+/* =========================
+   BIGGER DATE + PLACE
+========================= */
+
+.hero-date{
+  margin-top:30px;
+  color:#505b4b;
+
+  /* dukshëm më e madhe */
+  font-size:25px;
+
+  font-weight:400;
+  letter-spacing:10px;
+}
+
+.hero-place{
+  margin-top:16px;
+  color:#756c61;
+
+  /* dukshëm më e madhe */
+  font-size:14px;
+
+  letter-spacing:5px;
+}
+
+.hero-date,
+.hero-place{
+  text-shadow:0 1px 7px rgba(255,255,255,.55)
+}
+
+/* =========================
+   SHARED
+========================= */
+
+.section-label{
+  margin-bottom:18px;
+  color:var(--sage-dark);
+  font-size:10px;
+  letter-spacing:4px;
+}
+
+.ornament{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:45px auto 0;
+  color:var(--gold);
+}
+
+.ornament span{
+  width:50px;
+  height:1px;
+  background:var(--gold);
+  opacity:.5;
+}
+
+.ornament b{
+  font-size:15px;
+  font-weight:400
+}
+
+/* =========================
+   INTRO
+========================= */
+
+.intro{
+  padding:135px 25px;
+  text-align:center;
+  overflow:hidden;
+  background:linear-gradient(180deg,var(--ivory),#f3ecdf);
+}
+
+.intro h2{
+  color:var(--ink);
+  font-size:clamp(42px,7vw,72px);
+  font-weight:300;
+  line-height:.95;
+}
+
+.intro-script{
+  margin:10px 0 25px;
+  color:var(--gold);
+  font-family:Italianno,cursive;
+  font-size:42px;
+}
+
+.intro p{
+  max-width:540px;
+  margin:auto;
+  color:#70695f;
+  font-size:18px;
+  line-height:1.65;
+}
+
+/* =========================
+   DATE
+========================= */
+
+.date-section{
+  position:relative;
+  padding:115px 20px;
+  overflow:hidden;
+  color:var(--ivory);
+  text-align:center;
+  background:linear-gradient(
+    135deg,
+    var(--sage-dark),
+    var(--sage),
+    var(--olive)
+  );
+}
+
+.date-section::before,
+.date-section::after{
+  content:"";
+  position:absolute;
+  inset:20px;
+  border:1px solid rgba(255,255,255,.24);
+}
+
+.date-section::after{
+  inset:28px;
+  border-color:rgba(214,196,158,.18);
+}
+
+.date-small,
+.date-number,
+.date-month,
+.date-day{
+  position:relative;
+  z-index:2
+}
+
+.date-small{
+  margin-bottom:22px;
+  color:#e0d2b3;
+  font-size:10px;
+  letter-spacing:5px;
+}
+
+.date-number{
+  color:#fbf7ed;
+  font-size:clamp(100px,16vw,180px);
+  font-weight:300;
+  line-height:.7;
+}
+
+.date-month{
+  margin-top:35px;
+  font-size:22px;
+  letter-spacing:7px;
+}
+
+.date-day{
+  margin-top:12px;
+  color:#ddd6c8;
+  font-size:14px;
+  letter-spacing:3px;
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+.countdown-section{
+  padding:125px 20px;
+  overflow:hidden;
+  text-align:center;
+  background:radial-gradient(
+    circle at center,
+    #fffdf9,
+    #f2ebdf
+  );
+}
+
+.countdown-card{
+  position:relative;
+  max-width:940px;
+  margin:auto;
+  padding:75px 50px 70px;
+  border:1px solid rgba(180,154,106,.55);
+  background:rgba(255,253,248,.78);
+  box-shadow:0 25px 70px rgba(80,68,50,.07);
+}
+
+.countdown-card::before{
+  content:"";
+  position:absolute;
+  inset:9px;
+  border:1px solid rgba(120,131,108,.18);
+}
+
+.countdown-card::after{
+  content:"✦";
+  position:absolute;
+  top:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:0 15px;
+  color:var(--gold);
+  background:#f4eee4;
+  font-size:18px;
+}
+
+.countdown-title{
+  margin-bottom:12px;
+  color:var(--sage-dark);
+  font-size:10px;
+  letter-spacing:5px;
+}
+
+.countdown-script{
+  margin-bottom:40px;
+  color:var(--gold);
+  font-family:Italianno,cursive;
+  font-size:45px;
+}
+
+.countdown-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  max-width:760px;
+  margin:auto;
+}
+
+.count-item{
+  position:relative;
+  padding:0 20px;
+}
+
+.count-item:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:20%;
+  width:1px;
+  height:60%;
+  background:rgba(180,154,106,.35);
+}
+
+.count-number{
+  color:var(--ink);
+  font-size:clamp(42px,6vw,72px);
+  font-weight:300;
+  line-height:1;
+}
+
+.count-label{
+  margin-top:10px;
+  color:var(--brown);
+  font-size:9px;
+  letter-spacing:3px;
+}
+
+/* =========================
+   PROGRAM
+========================= */
+
+.program-section{
+  padding:140px 25px;
+  overflow:hidden;
+  background:#faf7f0;
+}
+
+.program-inner{
+  position:relative;
+  z-index:4;
+  max-width:850px;
+  margin:auto;
+}
+
+.program-heading{
+  margin-bottom:75px;
+  text-align:center;
+}
+
+.program-heading h2{
+  color:var(--ink);
+  font-size:clamp(45px,7vw,72px);
+  font-weight:300;
+}
+
+.script{
+  color:var(--gold);
+  font-family:Italianno,cursive;
+  font-size:43px;
+}
+
+.timeline{
+  position:relative;
+  max-width:720px;
+  margin:auto;
+}
+
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:130px;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:linear-gradient(
+    180deg,
+    transparent,
+    rgba(180,154,106,.45),
+    transparent
+  );
+}
+
+.timeline-item{
+  position:relative;
+  display:grid;
+  grid-template-columns:115px 30px 1fr;
+  gap:15px;
+  min-height:105px;
+}
+
+.timeline-time{
+  padding-top:2px;
+  color:var(--sage-dark);
+  font-size:15px;
+  letter-spacing:1px;
+  text-align:right;
+}
+
+.timeline-dot{
+  position:relative;
+  z-index:2;
+  width:11px;
+  height:11px;
+  margin-top:5px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  background:#faf7f0;
+}
+
+.timeline-dot::after{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:2px;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:var(--gold);
+}
+
+.timeline-content{
+  padding-bottom:35px
+}
+
+.timeline-content h3{
+  color:var(--ink);
+  font-size:22px;
+  font-weight:500;
+  letter-spacing:1px;
+}
+
+.timeline-content p{
+  margin-top:5px;
+  color:var(--brown);
+  font-size:14px;
+}
+
+/* =========================
+   MEMORIES
+========================= */
+
+.memories{
+  position:relative;
+  padding:145px 20px 175px;
+  overflow:hidden;
+  background:linear-gradient(
+    135deg,
+    #eae2d5,
+    #f4eee4,
+    #e2d9ca
+  );
+}
+
+.memories::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255,255,255,.5),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255,255,255,.4),
+      transparent 30%
+    );
+}
+
+.memories-heading{
+  position:relative;
+  z-index:3;
+  margin-bottom:80px;
+  text-align:center;
+}
+
+.memories-heading h2{
+  color:var(--ink);
+  font-size:clamp(45px,7vw,75px);
+  font-weight:300;
+}
+
+.instax-wall{
+  position:relative;
+  z-index:3;
+  max-width:930px;
+  min-height:650px;
+  margin:auto;
+}
+
+.instax{
+  position:absolute;
+  width:300px;
+  padding:13px;
+  background:#fffdf8;
+  box-shadow:
+    0 22px 40px rgba(67,57,45,.18),
+    0 3px 8px rgba(67,57,45,.08);
+  transition:
+    transform .45s ease,
+    box-shadow .45s ease;
+}
+
+.instax:hover{
+  z-index:10;
+  transform:translateY(-10px) rotate(0deg)!important;
+  box-shadow:0 30px 55px rgba(67,57,45,.23);
+}
+
+.instax::before{
+  content:"";
+  position:absolute;
+  inset:7px;
+  border:1px solid rgba(180,154,106,.22);
+  pointer-events:none;
+}
+
+.instax-photo{
+  width:100%;
+  height:310px;
+  overflow:hidden;
+  background:#e8e1d5;
+}
+
+.instax-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:saturate(.82) sepia(.06) contrast(.97);
+}
+
+.instax-one{
+  left:3%;
+  top:40px;
+  transform:rotate(-7deg);
+}
+
+.instax-two{
+  left:50%;
+  top:180px;
+  z-index:2;
+  transform:translateX(-50%) rotate(4deg);
+}
+
+.instax-three{
+  right:3%;
+  top:70px;
+  transform:rotate(7deg);
+}
+
+.instax-one::after,
+.instax-three::after{
+  content:"";
+  position:absolute;
+  top:-17px;
+  left:50%;
+  width:68px;
+  height:22px;
+  transform:translateX(-50%) rotate(-2deg);
+  background:rgba(211,198,171,.48);
+}
+
+.instax-three::after{
+  transform:translateX(-50%) rotate(3deg);
+}
+
+/* =========================
+   VENUE
+========================= */
+
+.venue{
+  padding:145px 25px;
+  overflow:hidden;
+  text-align:center;
+  background:radial-gradient(
+    circle at center,
+    #fffdf8,
+    #f2eadf
+  );
+}
+
+.venue-card{
+  position:relative;
+  max-width:760px;
+  margin:auto;
+  padding:80px 30px;
+  border:1px solid rgba(180,154,106,.45);
+  background:rgba(255,253,248,.88);
+  box-shadow:0 20px 60px rgba(75,62,45,.07);
+}
+
+.venue-card::before{
+  content:"";
+  position:absolute;
+  inset:10px;
+  border:1px solid rgba(120,131,108,.18);
+}
+
+.venue-label{
+  position:relative;
+  color:var(--sage-dark);
+  font-size:10px;
+  letter-spacing:5px;
+}
+
+.venue h2{
+  position:relative;
+  margin-top:25px;
+  color:var(--ink);
+  font-size:clamp(48px,8vw,78px);
+  font-weight:300;
+  line-height:.85;
+}
+
+.venue-script{
+  position:relative;
+  margin:10px 0 25px;
+  color:var(--gold);
+  font-family:Italianno,cursive;
+  font-size:43px;
+}
+
+.venue-location{
+  position:relative;
+  color:var(--brown);
+  font-size:15px;
+  letter-spacing:2px;
+}
+
+.maps-button{
+  position:relative;
+  display:inline-block;
+  margin-top:35px;
+  padding:14px 30px;
+  border:1px solid var(--gold);
+  color:var(--sage-dark);
+  text-decoration:none;
+  font-size:10px;
+  letter-spacing:3px;
+  transition:.3s ease;
+}
+
+.maps-button:hover{
+  border-color:var(--sage-dark);
+  color:#fff;
+  background:var(--sage-dark);
+}
+
+/* =========================
+   CONFIRMATION
+========================= */
+
+.confirmation{
+  position:relative;
+  padding:125px 25px;
+  overflow:hidden;
+  color:var(--ivory);
+  text-align:center;
+  background:linear-gradient(
+    135deg,
+    #465342,
+    #596650,
+    #4b5746
+  );
+}
+
+.confirmation::before{
+  content:"";
+  position:absolute;
+  inset:20px;
+  border:1px solid rgba(255,255,255,.2);
+}
+
+.confirmation::after{
+  content:"✦";
+  position:absolute;
+  top:36px;
+  left:50%;
+  transform:translateX(-50%);
+  color:var(--gold-light);
+  font-size:17px;
+}
+
+.confirmation-inner{
+  position:relative;
+  z-index:5;
+  max-width:650px;
+  margin:auto;
+}
+
+.confirmation-label{
+  color:#d9c9a7;
+  font-size:10px;
+  letter-spacing:5px;
+}
+
+.confirmation h2{
+  margin-top:20px;
+  font-size:clamp(40px,7vw,68px);
+  font-weight:300;
+}
+
+.confirmation-script{
+  margin:8px 0 28px;
+  color:#d1b98a;
+  font-family:Italianno,cursive;
+  font-size:43px;
+}
+
+.confirmation p{
+  max-width:530px;
+  margin:auto;
+  color:#e5dfd3;
+  font-size:18px;
+  line-height:1.65;
+}
+
+.confirmation-date{
+  margin-top:35px;
+  color:#d5c8ad;
+  font-size:10px;
+  letter-spacing:5px;
+}
+
+/* =========================
+   CLOSING
+========================= */
+
+.closing{
+  padding:155px 25px 105px;
+  overflow:hidden;
+  text-align:center;
+  background:radial-gradient(
+    circle at center,
+    #fffdf8,
+    #f2ebdf
+  );
+}
+
+.closing-small{
+  color:var(--sage-dark);
+  font-size:10px;
+  letter-spacing:5px;
+}
+
+.closing h2{
+  margin-top:25px;
+  color:var(--ink);
+  font-size:clamp(45px,8vw,82px);
+  font-weight:300;
+  line-height:.95;
+}
+
+.closing-names{
+  margin-top:20px;
+  color:var(--gold);
+  font-family:Italianno,cursive;
+  font-size:58px;
+}
+
+.closing-date{
+  margin-top:20px;
+  color:var(--brown);
+  font-size:11px;
+  letter-spacing:5px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  padding:35px 20px 42px;
+  color:#817668;
+  font-size:9px;
+  letter-spacing:3px;
+  text-align:center;
+  background:#e8dfd1;
+}
+
+.footer-brand{
+  margin-top:8px;
+  color:#62594f;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+.footer-brand span{
+  color:#9d8358
+}
+
+.footer-instagram{
+  display:inline-block;
+  margin-top:6px;
+  color:#817668;
+  font-size:10px;
+  letter-spacing:2px;
+  text-decoration:none;
+}
+
+.footer-instagram:hover{
+  color:#9d8358
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+  .envelope-wrapper{
+    width:340px;
+    height:220px;
+  }
+
+  .envelope-background{
+    width:430px;
+    height:315px;
+  }
+
+  .envelope-background::before{
+    width:375px;
+    height:265px;
+  }
+
+  .envelope-background::after{
+    width:290px;
+    height:205px;
+  }
+
+  .bg-dot{
+    width:3px;
+    height:3px
+  }
+
+  .bg-diamond{
+    width:5px;
+    height:5px
+  }
+
+  .bg-ring{
+    width:13px;
+    height:13px
+  }
+
+  .letter-name{
+    font-size:40px
+  }
+
+  .letter-amp{
+    font-size:28px
+  }
+
+  .letter-small{
+    font-size:7px;
+    letter-spacing:2px
+  }
+
+  .letter-message{
+    margin-top:15px;
+    font-size:11px
+  }
+
+  .letter-date{
+    font-size:7px;
+    letter-spacing:2px
+  }
+
+  .wax-seal{
+    width:64px;
+    height:64px;
+  }
+
+  .wax-monogram{
+    width:43px;
+    height:34px;
+  }
+
+  .wax-letter{
+    font-size:22px
+  }
+
+  .wax-letter-e{
+    left:3px
+  }
+
+  .wax-letter-j{
+    right:3px
+  }
+
+  .wax-heart{
+    font-size:10px
+  }
+
+  .wax-seal-detail{
+    bottom:7px;
+    font-size:4px
+  }
+
+  .envelope.open .letter{
+    transform:translateY(-125px);
+  }
+
+  .top-label{
+    top:6%;
+    font-size:7px;
+    letter-spacing:3px;
+  }
+
+  .open-label{
+    top:73%;
+    font-size:7px;
+    letter-spacing:3px;
+  }
+
+  .hero{
+    padding:80px 20px 75px;
+  }
+
+  .hero-photo img{
+    object-position:center center;
+    opacity:.36;
+    transform:scale(1.06);
+  }
+
+  .hero-photo::before{
+    background:linear-gradient(
+      180deg,
+      rgba(248,244,236,.5),
+      rgba(248,244,236,.23) 27%,
+      rgba(248,244,236,.15) 48%,
+      rgba(248,244,236,.38) 76%,
+      rgba(248,244,236,.68)
+    );
+  }
+
+  .hero-border{
+    inset:16px
+  }
+
+  .hero-light{
+    width:280px;
+    height:280px;
+  }
+
+  .hero-eyebrow{
+    gap:10px;
+    margin-bottom:30px;
+    font-size:7px;
+    letter-spacing:3px;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after{
+    width:25px;
+  }
+
+  .hero-name-first,
+  .hero-name-last{
+    font-size:clamp(72px,23vw,105px);
+    letter-spacing:-3px;
+  }
+
+  .hero-amp{
+    margin:19px 0 14px;
+    font-size:47px;
+  }
+
+  .hero-divider{
+    margin-top:43px
+  }
+
+  /* mobile: edhe këtu më të mëdha */
+
+  .hero-date{
+    margin-top:25px;
+    font-size:16px;
+    letter-spacing:6px;
+  }
+
+  .hero-place{
+    margin-top:13px;
+    font-size:10px;
+    letter-spacing:4px;
+  }
+
+  .intro{
+    padding:100px 25px
+  }
+
+  .intro p{
+    font-size:16px
+  }
+
+  .date-section{
+    padding:100px 20px
+  }
+
+  .date-number{
+    font-size:120px
+  }
+
+  .date-month{
+    font-size:17px;
+    letter-spacing:4px;
+  }
+
+  .countdown-section{
+    padding:85px 15px
+  }
+
+  .countdown-card{
+    padding:65px 15px;
+  }
+
+  .countdown-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:35px 0;
+  }
+
+  .count-item:nth-child(2)::after{
+    display:none
+  }
+
+  .count-number{
+    font-size:48px
+  }
+
+  .program-section{
+    padding:100px 18px
+  }
+
+  .program-heading{
+    margin-bottom:55px
+  }
+
+  .timeline::before{
+    left:87px
+  }
+
+  .timeline-item{
+    grid-template-columns:73px 28px 1fr;
+    gap:10px;
+    min-height:105px;
+  }
+
+  .timeline-time{
+    font-size:12px;
+    line-height:1.3;
+  }
+
+  .timeline-content h3{
+    font-size:18px
+  }
+
+  .timeline-content p{
+    font-size:12px
+  }
+
+  .memories{
+    padding:100px 15px 130px
+  }
+
+  .memories-heading{
+    margin-bottom:45px
+  }
+
+  .instax-wall{
+    max-width:380px;
+    min-height:830px;
+  }
+
+  .instax{
+    width:245px;
+    padding:10px;
+  }
+
+  .instax-photo{
+    height:255px
+  }
+
+  .instax-one{
+    left:0;
+    top:30px;
+  }
+
+  .instax-two{
+    top:275px;
+  }
+
+  .instax-three{
+    right:0;
+    top:520px;
+  }
+
+  .instax-one::after,
+  .instax-three::after{
+    top:-14px;
+    width:55px;
+    height:18px;
+  }
+
+  .venue{
+    padding:100px 18px
+  }
+
+  .venue-card{
+    padding:70px 20px
+  }
+
+  .confirmation{
+    padding:105px 25px
+  }
+
+  .confirmation p{
+    font-size:16px
+  }
+
+  .closing{
+    padding:115px 20px 80px
+  }
+
+  .closing-names{
+    font-size:50px
+  }
+}
+
+@media(max-width:380px){
+
+  .envelope-wrapper{
+    width:310px;
+    height:200px;
+  }
+
+  .envelope-background{
+    width:390px;
+    height:285px;
+  }
+
+  .envelope-background::before{
+    width:345px;
+    height:240px;
+  }
+
+  .envelope-background::after{
+    width:265px;
+    height:185px;
+  }
+
+  .hero-name-first,
+  .hero-name-last{
+    font-size:68px;
+  }
+
+  .hero-amp{
+    font-size:42px
+  }
+
+  .letter-name{
+    font-size:36px
+  }
+
+  .letter-message{
+    font-size:10px
+  }
+
+  .wax-seal{
+    width:58px;
+    height:58px;
+  }
+
+  .wax-monogram{
+    width:40px;
+    height:31px;
+  }
+
+  .wax-letter{
+    font-size:20px
+  }
+
+  .wax-heart{
+    font-size:9px
+  }
+
+  .timeline-item{
+    grid-template-columns:67px 25px 1fr;
+    gap:8px;
+  }
+
+  .timeline::before{
+    left:80px
+  }
+
+  .instax{
+    width:225px
+  }
+
+  .instax-photo{
+    height:235px
+  }
+
+  .hero-photo img{
+    opacity:.38
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  html{
+    scroll-behavior:auto
+  }
+
+  .hero-photo img,
+  .hero-light,
+  .sparkle{
+    animation:none
+  }
+
+  .sparkle{
+    opacity:.15
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     ENVELOPE
+========================= -->
+
+<div class="envelope-screen" id="envelopeScreen">
+
+  <div class="top-label">NJË FTESË DASHURIE</div>
+
+  <div class="envelope-background">
+
+    <div class="bg-dot dot-1"></div>
+    <div class="bg-dot sage dot-2"></div>
+    <div class="bg-dot dot-3"></div>
+    <div class="bg-dot sage dot-4"></div>
+    <div class="bg-dot dot-5"></div>
+    <div class="bg-dot sage dot-6"></div>
+    <div class="bg-dot dot-7"></div>
+    <div class="bg-dot sage dot-8"></div>
+    <div class="bg-dot dot-9"></div>
+
+    <div class="bg-diamond diamond-1"></div>
+    <div class="bg-diamond diamond-2"></div>
+    <div class="bg-diamond diamond-3"></div>
+    <div class="bg-diamond diamond-4"></div>
+
+    <div class="bg-ring ring-left"></div>
+    <div class="bg-ring ring-right"></div>
+    <div class="bg-ring ring-top"></div>
+
+  </div>
+
+  <div class="envelope-wrapper">
+
+    <div class="envelope" id="envelope">
+
+      <div class="envelope-back"></div>
+
+      <div class="letter">
+
+        <div class="letter-content">
+
+          <div class="letter-small">
+            ME SHUMË DASHURI
+          </div>
+
+          <div class="letter-name">
+            Elira
+          </div>
+
+          <div class="letter-amp">
+            &
+          </div>
+
+          <div class="letter-name">
+            Jon
+          </div>
+
+          <div class="letter-message">
+            Ju ftojmë të bëheni pjesë
+            e ditës sonë të veçantë.
+          </div>
+
+          <div class="letter-date">
+            20 · 07 · 2027
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="envelope-bottom"></div>
+      <div class="envelope-left"></div>
+      <div class="envelope-right"></div>
+      <div class="envelope-flap"></div>
+
+      <button
+        class="wax-seal"
+        id="waxSeal"
+        aria-label="Hap ftesën"
+      >
+
+        <span class="wax-monogram">
+
+          <span class="wax-letter wax-letter-e">
+            E
+          </span>
+
+          <span class="wax-heart">
+            ♥
+          </span>
+
+          <span class="wax-letter wax-letter-j">
+            J
+          </span>
+
+        </span>
+
+        <span class="wax-seal-detail">
+          ✦
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="open-label">
+    PREKNI VULËN PËR TA HAPUR
+  </div>
+
+</div>
+
+<!-- =========================
+     INVITATION
+========================= -->
+
+<main>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-photo">
+
+      <img
+        src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=90"
+        alt="Çift romantik"
+      >
+
+    </div>
+
+    <div class="hero-light"></div>
+
+    <div class="hero-grain"></div>
+
+    <div
+      class="hero-sparkles"
+      id="heroSparkles"
+    ></div>
+
+    <div class="hero-border"></div>
+
+    <div class="hero-inner">
+
+      <div class="hero-eyebrow">
+        ME GËZIM JU PRESIM
+      </div>
+
+      <!-- E J U HOQ KËTU -->
+
+      <div class="hero-names">
+
+        <div class="hero-name-first">
+          Elira
+        </div>
+
+        <div class="hero-amp">
+          &amp;
+        </div>
+
+        <div class="hero-name-last">
+          Jon
+        </div>
+
+      </div>
+
+      <div class="hero-divider">
+
+        <span class="hero-divider-line"></span>
+
+        <span class="hero-divider-symbol">
+          ✦
+        </span>
+
+        <span class="hero-divider-line"></span>
+
+      </div>
+
+      <div class="hero-date">
+        20 · 07 · 2027
+      </div>
+
+      <div class="hero-place">
+        PRISHTINË · KOSOVË
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- INTRO -->
+
+  <section class="intro">
+
+    <div class="section-label">
+      NJË DITË E VEÇANTË
+    </div>
+
+    <h2>
+      Bashkë, përgjithmonë
+    </h2>
+
+    <div class="intro-script">
+      me dashuri
+    </div>
+
+    <p>
+      Me zemrat plot dashuri, ju ftojmë të ndani me ne
+      gëzimin e kësaj dite dhe të bëheni pjesë e kujtimeve
+      që do t'i mbajmë përgjithmonë.
+    </p>
+
+    <div class="ornament">
+
+      <span></span>
+
+      <b>✦</b>
+
+      <span></span>
+
+    </div>
+
+  </section>
+
+  <!-- DATE -->
+
+  <section class="date-section">
+
+    <div class="date-small">
+      DATA E DASMËS
+    </div>
+
+    <div class="date-number">
+      20
+    </div>
+
+    <div class="date-month">
+      KORRIK 2027
+    </div>
+
+    <div class="date-day">
+      E MARTË
+    </div>
+
+  </section>
+
+  <!-- COUNTDOWN -->
+
+  <section class="countdown-section">
+
+    <div class="countdown-card">
+
+      <div class="countdown-title">
+        DERI NË MOMENTIN TONË
+      </div>
+
+      <div class="countdown-script">
+        dita po afron...
+      </div>
+
+      <div class="countdown-grid">
+
+        <div class="count-item">
+
+          <div
+            class="count-number"
+            id="days"
+          >
+            000
+          </div>
+
+          <div class="count-label">
+            DITË
+          </div>
+
+        </div>
+
+        <div class="count-item">
+
+          <div
+            class="count-number"
+            id="hours"
+          >
+            00
+          </div>
+
+          <div class="count-label">
+            ORË
+          </div>
+
+        </div>
+
+        <div class="count-item">
+
+          <div
+            class="count-number"
+            id="minutes"
+          >
+            00
+          </div>
+
+          <div class="count-label">
+            MINUTA
+          </div>
+
+        </div>
+
+        <div class="count-item">
+
+          <div
+            class="count-number"
+            id="seconds"
+          >
+            00
+          </div>
+
+          <div class="count-label">
+            SEKONDA
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PROGRAM -->
+
+  <section class="program-section">
+
+    <div class="program-inner">
+
+      <div class="program-heading">
+
+        <div class="section-label">
+          PROGRAMI
+        </div>
+
+        <h2>
+          Dita jonë
+        </h2>
+
+        <div class="script">
+          hap pas hapi
+        </div>
+
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+
+          <div class="timeline-time">
+            18:00<br>– 19:00
+          </div>
+
+          <div class="timeline-dot"></div>
+
+          <div class="timeline-content">
+
+            <h3>
+              PRITJA E MYSAFIRËVE
+            </h3>
+
+            <p>
+              Mirëseardhja e mysafirëve.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="timeline-item">
+
+          <div class="timeline-time">
+            19:30
+          </div>
+
+          <div class="timeline-dot"></div>
+
+          <div class="timeline-content">
+
+            <h3>
+              HYRJA E ÇIFTIT
+            </h3>
+
+            <p>
+              Momenti ynë i veçantë.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="timeline-item">
+
+          <div class="timeline-time">
+            20:00
+          </div>
+
+          <div class="timeline-dot"></div>
+
+          <div class="timeline-content">
+
+            <h3>
+              VALLËZIMI
+            </h3>
+
+            <p>
+              Le ta fillojmë festën së bashku.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="timeline-item">
+
+          <div class="timeline-time">
+            20:30
+          </div>
+
+          <div class="timeline-dot"></div>
+
+          <div class="timeline-content">
+
+            <h3>
+              USHQIMI
+            </h3>
+
+            <p>
+              Një mbrëmje e bukur rreth tryezës.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="timeline-item">
+
+          <div class="timeline-time">
+            22:00
+          </div>
+
+          <div class="timeline-dot"></div>
+
+          <div class="timeline-content">
+
+            <h3>
+              PRERJA E TORTËS
+            </h3>
+
+            <p>
+              Një tjetër kujtim për t'u festuar bashkë.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MEMORIES -->
+
+  <section class="memories">
+
+    <div class="memories-heading">
+
+      <div class="section-label">
+        MOMENTE TONA
+      </div>
+
+      <h2>
+        Kujtime
+      </h2>
+
+      <div class="script">
+        para ditës sonë
+      </div>
+
+    </div>
+
+    <div class="instax-wall">
+
+      <div class="instax instax-one">
+
+        <div class="instax-photo">
+
+          <img
+            src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85"
+            alt="Çift"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="instax instax-two">
+
+        <div class="instax-photo">
+
+          <img
+            src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=85"
+            alt="Moment romantik"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="instax instax-three">
+
+        <div class="instax-photo">
+
+          <img
+            src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=85"
+            alt="Festë martese"
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- VENUE -->
+
+  <section class="venue">
+
+    <div class="venue-card">
+
+      <div class="venue-label">
+        VENDI I FESTËS
+      </div>
+
+      <h2>
+        GARDEN<br>
+        RESTAURANT
+      </h2>
+
+      <div class="venue-script">
+        Prishtinë
+      </div>
+
+      <div class="venue-location">
+        PRISHTINË · KOSOVË
+      </div>
+
+      <a
+        class="maps-button"
+        href="https://www.google.com/maps/search/?api=1&query=Garden+Restaurant+Prishtine"
+        target="_blank"
+        rel="noopener"
+      >
+        SHIKO LOKACIONIN
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- CONFIRMATION -->
+
+  <section class="confirmation">
+
+    <div class="confirmation-inner">
+
+      <div class="confirmation-label">
+        JU LUTEMI
+      </div>
+
+      <h2>
+        Konfirmoni pjesëmarrjen
+      </h2>
+
+      <div class="confirmation-script">
+        prania juaj do të na gëzonte
+      </div>
+
+      <p>
+        Ju lutemi të na konfirmoni pjesëmarrjen.
+        Nëse nuk mund të jeni me ne, ju lutemi na njoftoni.
+      </p>
+
+      <div class="confirmation-date">
+        20 · 07 · 2027
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CLOSING -->
+
+  <section class="closing">
+
+    <div class="closing-small">
+      ME DASHURI JU PRESIM
+    </div>
+
+    <h2>
+      Dita jonë do të jetë<br>
+      më e bukur me ju.
+    </h2>
+
+    <div class="closing-names">
+      Elira & Jon
+    </div>
+
+    <div class="closing-date">
+      20 · 07 · 2027
+    </div>
+
+    <div class="ornament">
+
+      <span></span>
+
+      <b>✦</b>
+
+      <span></span>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+
+    ELIRA & JON · 2027
+
+    <div class="footer-brand">
+
+      Punuar me dashuri nga
+
+      <span>
+        Ftesa Virtuale
+      </span>
+
+    </div>
+
+    <a
+      class="footer-instagram"
+      href="https://www.instagram.com/ftesa.virtuale/"
+      target="_blank"
+      rel="noopener"
+    >
+      @ftesa.virtuale
+    </a>
+
+  </footer>
+
+</main>
+
+<script>
+
+/* =========================
+   ENVELOPE
+========================= */
+
+const envelope =
+  document.getElementById("envelope");
+
+const waxSeal =
+  document.getElementById("waxSeal");
+
+const envelopeScreen =
+  document.getElementById("envelopeScreen");
+
+let invitationOpened = false;
+
+waxSeal.addEventListener("click", () => {
+
+  if(invitationOpened) return;
+
+  invitationOpened = true;
+
+  envelope.classList.add("open");
+
+  setTimeout(() => {
+
+    envelopeScreen.classList.add("opened");
+
+    document.body.style.overflow = "auto";
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  },1700);
+
+});
+
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+const weddingDate =
+  new Date("July 20, 2027 18:00:00").getTime();
+
+const daysEl =
+  document.getElementById("days");
+
+const hoursEl =
+  document.getElementById("hours");
+
+const minutesEl =
+  document.getElementById("minutes");
+
+const secondsEl =
+  document.getElementById("seconds");
+
+function updateCountdown(){
+
+  const difference =
+    weddingDate - Date.now();
+
+  if(difference <= 0){
+
+    daysEl.textContent = "000";
+    hoursEl.textContent = "00";
+    minutesEl.textContent = "00";
+    secondsEl.textContent = "00";
+
+    return;
+  }
+
+  const days =
+    Math.floor(difference / 86400000);
+
+  const hours =
+    Math.floor(difference / 3600000) % 24;
+
+  const minutes =
+    Math.floor(difference / 60000) % 60;
+
+  const seconds =
+    Math.floor(difference / 1000) % 60;
+
+  daysEl.textContent =
+    String(days).padStart(3,"0");
+
+  hoursEl.textContent =
+    String(hours).padStart(2,"0");
+
+  minutesEl.textContent =
+    String(minutes).padStart(2,"0");
+
+  secondsEl.textContent =
+    String(seconds).padStart(2,"0");
+
+}
+
+updateCountdown();
+
+setInterval(
+  updateCountdown,
+  1000
+);
+
+
+/* =========================
+   LIVE SPARKLES
+========================= */
+
+const sparkleContainer =
+  document.getElementById("heroSparkles");
+
+function createSparkle(){
+
+  const sparkle =
+    document.createElement("span");
+
+  sparkle.className = "sparkle";
+
+  const type = Math.random();
+
+  if(type > .80){
+
+    sparkle.classList.add("large");
+
+  }else if(type < .22){
+
+    sparkle.classList.add("tiny");
+
+  }
+
+  let x = Math.random() * 100;
+  let y = Math.random() * 100;
+
+  /* Keep most sparkles away from the names */
+
+  if(
+    x > 34 &&
+    x < 66 &&
+    y > 25 &&
+    y < 75
+  ){
+
+    x = Math.random() > .5
+      ? Math.random() * 28
+      : 72 + Math.random() * 28;
+
+  }
+
+  sparkle.style.left =
+    `${x}%`;
+
+  sparkle.style.top =
+    `${y}%`;
+
+  const duration =
+    3.0 + Math.random() * 4.2;
+
+  const delay =
+    Math.random() * 1.2;
+
+  sparkle.style.setProperty(
+    "--duration",
+    `${duration}s`
+  );
+
+  sparkle.style.setProperty(
+    "--delay",
+    `${delay}s`
+  );
+
+  sparkleContainer.appendChild(
+    sparkle
+  );
+
+  setTimeout(
+    () => sparkle.remove(),
+    (duration + delay + .5) * 1000
+  );
+
+}
+
+
+/* Pak më shumë, por ende elegante */
+
+for(let i=0;i<26;i++){
+
+  createSparkle();
+
+}
+
+
+/* Pak më shpesh se më parë */
+
+setInterval(
+  createSparkle,
+  650
+);
+
+
+/* Small groups from time to time */
+
+setInterval(() => {
+
+  const amount =
+    2 + Math.floor(Math.random() * 2);
+
+  for(let i=0;i<amount;i++){
+
+    setTimeout(
+      createSparkle,
+      i * 220
+    );
+
+  }
+
+},5600);
+
+
+/* Keep the amount controlled */
+
+setInterval(() => {
+
+  const sparkles =
+    sparkleContainer.querySelectorAll(
+      ".sparkle"
+    );
+
+  if(sparkles.length > 40){
+
+    [
+      ...sparkles
+    ]
+    .slice(
+      0,
+      sparkles.length - 36
+    )
+    .forEach(
+      el => el.remove()
+    );
+
+  }
+
+},5000);
+
+</script>
+
+</body>
+</html>
